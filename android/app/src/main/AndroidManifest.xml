@@ -15,7 +15,7 @@
         android:maxSdkVersion="29"
         tools:replace="android:maxSdkVersion" />
     <application
-        android:label="community"
+        android:label="FaceIT"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

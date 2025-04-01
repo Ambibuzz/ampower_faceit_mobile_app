@@ -40,10 +40,14 @@ class WebRequests {
       'Cookie': 'sid=$id;',
       'Content-Type': 'application/json'
     };
+    DIO.FormData formData = DIO.FormData.fromMap({
+      'doc': jsonEncode(bodyData['data']),
+      'action': 'Save',
+    });
     var response = await ApiMethodHandler().makePOSTRequest(
         headers: headers,
-        url: 'api/method/ampower_faceit.ampower_faceit.doctype.checkin_service.checkin',
-        data: bodyData
+        url: 'api/method/frappe.desk.form.save.savedocs',
+        data: formData
     );
     var finalData = jsonDecode(response.toString());
     return finalData;

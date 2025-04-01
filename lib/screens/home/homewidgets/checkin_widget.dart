@@ -102,24 +102,22 @@ class _CheckinWidgetState extends State<CheckinWidget> with SingleTickerProvider
         if(value.isNotEmpty){
           bodyData = {
             "data": {
-              'employee': widget.empId,
-              'face_detected': '',
+              "doctype":"Employee Checkin",
+              "employee": widget.empId,
               "device_id": '${value[0]},${value[1]}',
               "log_type": widget.checkinString,
-              "face_detection_status": 1,
-              "face_detection_comment": "success",
             }
           },
           WebRequests().checkinUser(bodyData).then((value) => {
-            if(value['message']['location_status'] == 1){
-              WebRequests().uploadImage(employeePhotoCompressed,value['message']['name'],widget.empId).then((value) => {
+            if(value['docs'].first.isNotEmpty){
+              WebRequests().uploadImage(employeePhotoCompressed,value['docs'].first['name'],widget.empId).then((value) => {
                 btmSheet!(() {
                   isAttendanceMarked = true;
                   locationStatus = true;
                 }),
               }),
               if(checkinNote.text != ''){
-                WebRequests().addCheckinComment(checkinNote.text, value['message']['name']).then((value) => {
+                WebRequests().addCheckinComment(checkinNote.text, value['docs'].first['name']).then((value) => {
                   setState(() {
                     checkinNote.text = '';
                   })

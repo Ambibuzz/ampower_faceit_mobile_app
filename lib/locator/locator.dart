@@ -1,0 +1,76 @@
+
+import 'package:get_it/get_it.dart';
+
+import '../screens/auth/viewmodel/authpage_viewmodel.dart';
+import '../screens/base_url/viewmodel/base_url_viewmodel.dart';
+import '../screens/expense_claim/viewmodel/expenseclaim_viewmodel.dart';
+import '../screens/expense_claim/viewmodel/expenseclaimdetails_viewmodel.dart';
+import '../screens/expense_claim/viewmodel/newexpenseclaim_viewmodel.dart';
+import '../screens/home/viewmodel/homescreen_viewmodel.dart';
+import '../screens/issue_tracker/viewmodel/createissue_viewmodel.dart';
+import '../screens/issue_tracker/viewmodel/issuedetails_viewmodel.dart';
+import '../screens/issue_tracker/viewmodel/issuetracker_viewmodel.dart';
+import '../screens/leave_application/viewmodel/applyforleave_viewmodel.dart';
+import '../screens/leave_application/viewmodel/leaveapplication_viewmodel.dart';
+import '../screens/leave_application/viewmodel/leavedetails_viewmodel.dart';
+import '../screens/monthly_data/viewmodel/monthly_data_viewmodel.dart';
+import '../screens/notification/viewmodel/notification_viewmodel.dart';
+import '../screens/past_attendance_request/viewmodel/new_attendance_viewmodel.dart';
+import '../screens/past_attendance_request/viewmodel/past_attendance_details_viewmodel.dart';
+import '../screens/past_attendance_request/viewmodel/past_attendance_viewmodel.dart';
+import '../screens/profile/viewmodel/profilepage_viewmodel.dart';
+import '../screens/salary_slips/viewmodel/salary_slip_details_viewmodel.dart';
+import '../screens/salary_slips/viewmodel/salary_slip_viewmodel.dart';
+import '../screens/task_list/viewmodel/add_new_task_progress_viewmodel.dart';
+import '../screens/task_list/viewmodel/add_new_task_viewmodel.dart';
+import '../screens/task_list/viewmodel/task_description_viewmodel.dart';
+import '../screens/task_list/viewmodel/task_list_viewmodel.dart';
+import '../screens/task_list/viewmodel/task_progress_viewmodel.dart';
+import '../screens/timesheet/viewmodel/addtimesheet_viewmodel.dart';
+import '../screens/timesheet/viewmodel/editaddtimesheet_viewmodel.dart';
+import '../screens/timesheet/viewmodel/newtimesheet_viewmodel.dart';
+import '../screens/timesheet/viewmodel/timesheet_viewmodel.dart';
+import '../screens/timesheet/viewmodel/timesheetdetails_viewmodel.dart';
+import '../screens/todo_list/viewmodel/createnewtodo_viewmodel.dart';
+import '../screens/todo_list/viewmodel/tododescription_viewmodel.dart';
+import '../screens/todo_list/viewmodel/todolist_viewmodel.dart';
+import '../service/navigation_service.dart';
+
+final locator = GetIt.instance;
+
+Future setUpLocator() async {
+  locator.registerLazySingleton<NavigationService>(() => NavigationService());
+  locator.registerLazySingleton<HomeScreenViewModel>(() => HomeScreenViewModel());
+  locator.registerLazySingleton<PastAttendanceViewModel>(() => PastAttendanceViewModel());
+  locator.registerLazySingleton<NewAttendanceViewModel>(() => NewAttendanceViewModel());
+  locator.registerLazySingleton<PastAttendaceDetailsViewModel>(() => PastAttendaceDetailsViewModel());
+  locator.registerLazySingleton<SalarySlipViewModel>(() => SalarySlipViewModel());
+  locator.registerLazySingleton<SalarySlipDetailsViewModel>(() => SalarySlipDetailsViewModel());
+  locator.registerLazySingleton<AddNewTaskProgressViewModel>(() => AddNewTaskProgressViewModel());
+  locator.registerLazySingleton<AddNewTaskViewModel>(() => AddNewTaskViewModel());
+  locator.registerLazySingleton<TaskDescriptionViewModel>(() => TaskDescriptionViewModel());
+  locator.registerLazySingleton<TaskListViewModel>(() => TaskListViewModel());
+  locator.registerLazySingleton<TaskProgressViewModel>(() => TaskProgressViewModel());
+  locator.registerLazySingleton<AddTimeSheetViewModel>(() => AddTimeSheetViewModel());
+  locator.registerLazySingleton<EditAddTimeSheetViewModel>(() => EditAddTimeSheetViewModel());
+  locator.registerLazySingleton<NewTimeSheetViewModel>(() => NewTimeSheetViewModel());
+  locator.registerLazySingleton<TimesheetViewModel>(() => TimesheetViewModel());
+  locator.registerLazySingleton<TimeSheetDetailsViewModel>(() => TimeSheetDetailsViewModel());
+  locator.registerLazySingleton<IssueTrackerViewModel>(() => IssueTrackerViewModel());
+  locator.registerLazySingleton<CreateIssueViewModel>(() => CreateIssueViewModel());
+  locator.registerLazySingleton<IssueDetailsViewModel>(() => IssueDetailsViewModel());
+  locator.registerLazySingleton<CreateNewTodoViewModel>(() => CreateNewTodoViewModel());
+  locator.registerLazySingleton<TodoDescriptionViewModel>(() => TodoDescriptionViewModel());
+  locator.registerLazySingleton<TodoListViewModel>(() => TodoListViewModel());
+  locator.registerLazySingleton<ProfilePageViewModel>(() => ProfilePageViewModel());
+  locator.registerLazySingleton<NotificationViewModel>(() => NotificationViewModel());
+  locator.registerLazySingleton<LeaveApplicationViewModel>(() => LeaveApplicationViewModel());
+  locator.registerLazySingleton<ApplyForLeaveViewModel>(() => ApplyForLeaveViewModel());
+  locator.registerLazySingleton<LeaveDetailsViewModel>(() => LeaveDetailsViewModel());
+  locator.registerLazySingleton<ExpenseClaimViewModel>(() => ExpenseClaimViewModel());
+  locator.registerLazySingleton<NewExpenseClaimViewModel>(() => NewExpenseClaimViewModel());
+  locator.registerLazySingleton<ExpenseClaimDetailsViewModel>(() => ExpenseClaimDetailsViewModel());
+  locator.registerLazySingleton<MonthlyDataViewModel>(() => MonthlyDataViewModel());
+  locator.registerLazySingleton<BaseUrlViewModel>(() => BaseUrlViewModel());
+  locator.registerLazySingleton<AuthPageViewModel>(() => AuthPageViewModel());
+}

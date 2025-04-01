@@ -1,0 +1,16 @@
+const String splashScreenViewRoute = "splash_screen";
+const String homeScreenViewRoute = 'home_screen';
+const String baseUrl = 'base_url';
+const String authScreen = 'auth_screen';
+const String leaveApplicationScreen = 'leave_application_screen';
+const String expenseClaimScreen = 'expense_claim_screen';
+const String issueTrackerScreen = 'issue_tracker_screen';
+const String salarySlipScreen = 'salary_slip_screen';
+const String attendancerecordScreen = 'attendance_record_screen';
+const String timesheetScreen = 'timesheet_screen';
+const String pastAttendanceScreen = 'past_attendance_screen';
+const String todolistScreen = 'todolist_screen';
+const String tasklistScreen = 'tasklist_screen';
+const String notificationScreen = 'notification_screen';
+const String profileScreen = 'profile_screen';
+const String employeeSearchScreen = 'employee_search_screen';

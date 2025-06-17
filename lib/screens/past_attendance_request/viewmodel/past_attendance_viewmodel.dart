@@ -31,12 +31,14 @@ class PastAttendanceViewModel extends BaseViewModel{
   void getPastRequestData() async{
     pastAttendanceRequestList.clear();
     String filter = "";
+    notifyListeners();
     pastAttendanceRequestList = await WebRequests().getPastAttendanceRequestList(filter) ?? [];
     notifyListeners();
   }
 
   void getPastRequestDataWithFilters() async{
     pastAttendanceRequestList.clear();
+    notifyListeners();
     String filter = '["Attendance Request","from_date",">=","${fromDate.text}"],["Attendance Request","to_date","<=","${toDate.text}"]';
     pastAttendanceRequestList = await WebRequests().getPastAttendanceRequestList(filter) ?? [];
     notifyListeners();

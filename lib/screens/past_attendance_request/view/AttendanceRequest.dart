@@ -23,7 +23,6 @@ class AttendanceRequest extends StatelessWidget{
               return StatefulBuilder(
                 builder: (context, StateSetter btmSheetState){
                   return Container(
-                    height: MediaQuery.sizeOf(context).height,
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
                         color: Colors.white,

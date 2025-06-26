@@ -1,7 +1,5 @@
 import 'package:community/base_view.dart';
 import 'package:community/components/global_styles/text_field_design.dart';
-import 'package:community/locator/locator.dart';
-import 'package:community/screens/home/viewmodel/homescreen_viewmodel.dart';
 import 'package:community/screens/past_attendance_request/viewmodel/new_attendance_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,7 +56,6 @@ class NewAttendanceRequest extends StatelessWidget{
                                         context: Get.context!,
                                         initialDate: DateTime.now(),
                                         firstDate: DateTime(1950),
-                                        //DateTime.now() - not to allow to choose before today.
                                         lastDate: DateTime(2100));
 
                                     if (pickedDate != null) {

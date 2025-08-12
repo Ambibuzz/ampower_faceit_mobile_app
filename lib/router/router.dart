@@ -1,3 +1,5 @@
+import 'package:community/screens/doc_details/view/doc_renderer.dart';
+
 import '../screens/profile/view/profile_page.dart';
 import '../screens/splash_screen/view/splash_screen.dart';
 import '../router/routing_constants.dart';
@@ -50,6 +52,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => NotificationPage());
     case profileScreen:
       return MaterialPageRoute(builder: (context) => ProfilePage());
+    case docDetailsScreen:
+      return MaterialPageRoute(builder: (context) => DocRenderer(doctype: settings.arguments));
     default:
       return MaterialPageRoute(
           builder: (context) => UndefinedView(name: settings.name));

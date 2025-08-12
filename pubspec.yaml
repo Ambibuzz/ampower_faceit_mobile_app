@@ -66,6 +66,10 @@ dependencies:
   provider: ^6.1.2
   logger:
   swipe_to: ^1.0.6
+  flutter_holo_date_picker: ^2.0.0
+  board_datetime_picker: ^2.8.1
+  light_html_editor:
+  flutter_js: ^0.8.2
 
 
 

@@ -1,12 +1,16 @@
 import '../../../base_view.dart';
 import '../../../components/global_styles/strip_style.dart';
 import '../../../helpers/null_checker.dart';
+import '../../../locator/locator.dart';
+import '../../../router/routing_constants.dart';
 import '../../../screens/expense_claim/viewmodel/expenseclaim_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../components/global_styles/text_field_design.dart';
+import '../../../service/navigation_service.dart';
+import '../../doc_details/view/doc_renderer.dart';
 import 'expense_claim_details.dart';
 import 'new_expense_claim.dart';
 
@@ -401,26 +405,10 @@ class ExpenseClaim extends StatelessWidget{
                         ...List.generate(model.expense_list.length, (index) {
                           return InkWell(
                             onTap: (){
-                              showModalBottomSheet(
-                                  context: Get.context!,
-                                  backgroundColor: Colors.transparent,
-                                  isDismissible: true,
-                                  builder: (btmSheetContext){
-                                    return StatefulBuilder(
-                                      builder: (context, StateSetter btmSheetState){
-                                        return Container(
-                                            height: MediaQuery.sizeOf(context).height,
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))
-                                            ),
-                                            child: ExpenseClaimDetails(docName: checkForNull(model.expense_list[index]['name'], ''),bottomSheetContext: btmSheetContext,),
-                                        );
-                                      },
-                                    );
-                                  }
-                              );
+                              locator.get<NavigationService>().navigateTo(docDetailsScreen,arguments: {
+                                'doctype': 'Expense Claim',
+                                'reference_name': model.expense_list[index]['name'],
+                              });
                             },
                             child: Container(
                               margin: EdgeInsets.only(left: 10,right: 10,top: 2),

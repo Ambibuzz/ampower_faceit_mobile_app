@@ -180,8 +180,7 @@ class DocRendererViewmodel extends BaseViewModel {
       }
       //----
 
-      if (fields[i]['fieldtype'] == 'Tab Break' &&
-          evaluateJS(fields[i]['depends_on'] ?? '') == 'true') {
+      if ((fields[i]['fieldtype'] == 'Tab Break') && evaluateJS(fields[i]['depends_on'] ?? '') == 'true') {
         String sectionLabel = fields[i]['label'] ?? '';
 
         if (!modifiedMetaWithOrphanFields.containsKey(sectionLabel)) {
@@ -205,7 +204,9 @@ class DocRendererViewmodel extends BaseViewModel {
       }
     }
 
-    modifiedMeta['Details'] = orphanFields;
+    if(currentMeta['docs'].first['name'] == 'Leave Application') {
+      modifiedMeta['Details'] = orphanFields;
+    }
     modifiedMeta.addAll(modifiedMetaWithOrphanFields);
 
     modifiedMeta['Attachements'] = [

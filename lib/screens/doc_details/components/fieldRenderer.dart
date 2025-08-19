@@ -71,6 +71,7 @@ Widget fieldRenderer(fieldInfo, context, model, doctype) {
       return BuildCheckBoxField(fieldInfo: fieldInfo, model: model, doctype: doctype);
 
     default:
+      return Container();
       return ListTile(
         title: Text('${fieldInfo['label']}'),
         subtitle: Text('${fieldInfo['fieldtype']}'),

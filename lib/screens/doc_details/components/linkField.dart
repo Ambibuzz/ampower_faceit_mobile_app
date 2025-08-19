@@ -42,7 +42,6 @@ class _BuildLinkFieldState extends State<BuildLinkField> {
             'txt': '',
             'doctype': widget.fieldInfo['options'],
             'ignore_user_permissions': 0,
-            'reference_doctype': 'Lifting Reports',
             'page_length': 10
           }),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -62,27 +61,43 @@ class _BuildLinkFieldState extends State<BuildLinkField> {
                 initialValue = null;
               }
 
-              return DropdownButtonFormField(
-                isExpanded: true,
-                value: initialValue,
-                items: options.map<DropdownMenuItem<String>>((item) {
-                  return DropdownMenuItem<String>(
-                    value: item['value'],
-                    child: Text(item['value']),
-                  );
-                }).toList(),
-                onChanged: isEditable
-                    ? (newValue) {
-                  widget.model.controllers[widget.fieldInfo['fieldname']]?.text = newValue.toString() ?? '';
-                }
-                    : null,
-                decoration: inputDecoration(widget.fieldInfo['label']).copyWith(
-                  filled: true,
-                  fillColor: isEditable ? Colors.white : Colors.grey[300],
+              return IgnorePointer(
+                ignoring: !isEditable,
+                child: DropdownButtonFormField<String>(
+                  isExpanded: true,
+                  value: initialValue,
+                  items: options.map<DropdownMenuItem<String>>((item) {
+                    return DropdownMenuItem<String>(
+                      value: item['value'],
+                      child: Text(item['value']),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    if (isEditable && newValue != null) {
+                      widget.model.controllers[widget.fieldInfo['fieldname']]?.text = newValue;
+                    }
+                  },
+                  icon: isEditable ? const Icon(Icons.arrow_drop_down) : const SizedBox.shrink(),
+                  decoration: inputDecoration(widget.fieldInfo['label']).copyWith(
+                    filled: true,
+                    fillColor: isEditable ? Colors.white : Colors.grey[100],
+                    helperStyle: const TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(color: Colors.black),
+                  ),
+                  style: const TextStyle(color: Colors.black), // stays solid
                 ),
-                style: TextStyle(color: isEditable ? Colors.black : Colors.grey),
               );
             } else {
+              if(widget.model.controllers[widget.fieldInfo['fieldname']] != "") {
+                return IgnorePointer(
+                  ignoring: !isEditable,
+                  child: TextField(
+                    controller: widget.model.controllers[widget.fieldInfo['fieldname']],
+                    decoration: inputDecoration(widget.fieldInfo['label'])
+                  ),
+
+                );
+              }
               return const Text("No data available");
             }
           },

@@ -176,7 +176,7 @@ class _TableBuilderState extends State<TableBuilder> {
                           label: const Text("View",
                               style: TextStyle(color: Colors.white)),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF68712),
+                            backgroundColor: const Color(0xFF006CB5),
                             minimumSize: const Size(74, 32),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -213,7 +213,7 @@ class _TableBuilderState extends State<TableBuilder> {
               icon: const Icon(Icons.add, size: 16, color: Colors.white),
               label: const Text("Add", style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF68712),
+                backgroundColor: const Color(0xFF006CB5),
                 minimumSize: const Size(74, 32),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -228,7 +228,7 @@ class _TableBuilderState extends State<TableBuilder> {
               icon: const Icon(Icons.delete, size: 16, color: Colors.white),
               label: const Text("Delete", style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF68712),
+                backgroundColor: const Color(0xFF006CB5),
                 minimumSize: const Size(74, 32),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -329,12 +329,12 @@ void _showDetailPopup(BuildContext context, String rowId,
                           fixedSize: const Size(123, 48),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(color: Color(0xFFF68712)),
+                            side: const BorderSide(color: Color(0xFF006CB5)),
                           ),
                         ),
                         child: const Text(
                           "Cancel",
-                          style: TextStyle(color: Color(0xFFF68712)),
+                          style: TextStyle(color: Color(0xFF006CB5)),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -348,7 +348,7 @@ void _showDetailPopup(BuildContext context, String rowId,
                           Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF68712),
+                          backgroundColor: const Color(0xFF006CB5),
                           fixedSize: const Size(123, 48),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

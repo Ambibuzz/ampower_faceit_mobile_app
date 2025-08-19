@@ -150,7 +150,7 @@ class _AttachmentHandlerState extends State<AttachmentHandler> {
                                 backgroundColor:
                                     Colors.white, // White Background
                                 side: const BorderSide(
-                                  color: Color(0xFFF68712),
+                                  color: Color(0xFF006CB5),
                                 ), // Orange Border
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -163,7 +163,7 @@ class _AttachmentHandlerState extends State<AttachmentHandler> {
                                   fontFamily: "DM Sans",
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
-                                  color: Color(0xFFF68712), // Orange Text
+                                  color: Color(0xFF006CB5), // Orange Text
                                 ),
                               ),
                             ),
@@ -243,7 +243,7 @@ class _AttachmentHandlerState extends State<AttachmentHandler> {
                   width: 150,
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF68712),
+                    color: const Color(0xFF006CB5),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Row(

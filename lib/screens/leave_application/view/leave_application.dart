@@ -1,9 +1,12 @@
 import 'package:community/components/global_styles/strip_style.dart';
 import 'package:community/helpers/null_checker.dart';
 import 'package:community/locator/locator.dart';
+import 'package:community/router/routing_constants.dart';
+import 'package:community/screens/doc_details/view/doc_renderer.dart';
 import 'package:community/screens/home/viewmodel/homescreen_viewmodel.dart';
 import 'package:community/screens/leave_application/viewmodel/leaveapplication_viewmodel.dart';
 import 'package:community/base_view.dart';
+import 'package:community/service/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -600,26 +603,10 @@ class LeaveApplication extends StatelessWidget{
                           ...List.generate(model.leave_list.length, (index) {
                             return InkWell(
                               onTap: (){
-                                showModalBottomSheet(
-                                    context: Get.context!,
-                                    backgroundColor: Colors.transparent,
-                                    isDismissible: true,
-                                    builder: (btmSheetContext){
-                                      return StatefulBuilder(
-                                        builder: (context, StateSetter btmSheetState){
-                                          return Container(
-                                            height: MediaQuery.sizeOf(context).height,
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))
-                                            ),
-                                            child: LeaveDetails(docName: checkForNull(model.leave_list[index]['name'], ''),bottomSheetContext: btmSheetContext),
-                                          );
-                                        },
-                                      );
-                                    }
-                                );
+                                locator.get<NavigationService>().navigateTo(docDetailsScreen,arguments: {
+                                  'doctype': 'Leave Application',
+                                  'reference_name': model.leave_list[index]['name'],
+                                });
                               },
                               child: _leaveListStrip(
                                 checkForNull(model.leave_list[index]['leave_type'], ''),

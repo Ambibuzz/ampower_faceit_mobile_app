@@ -4,6 +4,7 @@ import 'package:dio/dio.dart' as DIO;
 import '../../../utils/apiMethodHandlers.dart';
 import '../../helpers/shared_preferences.dart';
 import '../../utils/Urls.dart';
+import '../../utils/dioSingleton.dart';
 
 
 class CommonApiRequest{
@@ -19,6 +20,29 @@ class CommonApiRequest{
       return true;
     }
     return false;
+  }
+
+  Future<bool> isFaceITEnabled() async{
+    var id =  await getId();
+    var headers = {'Cookie': 'sid=$id;'};
+    try{
+      DioInstance dioInstance = DioInstance();
+      DIO.Dio dio = await dioInstance.getDioInstance();
+      DIO.Response response = await dio.get(
+          'api/resource/Faceit Community Config/Faceit Community Config',
+          options: DIO.Options(
+              headers: headers
+          )
+      );
+      var finalData =  jsonDecode(response.toString());
+      var result = true;
+      if(finalData != null) {
+        result = finalData["data"]["enable_faceit"] == 1 ? true: false;
+      }
+      return result;
+    } on DIO.DioException catch(e) {
+      return true;
+    }
   }
 
 

@@ -65,6 +65,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.25"
+  auto_size_text:
+    dependency: transitive
+    description:
+      name: auto_size_text
+      sha256: "3f5261cd3fb5f2a9ab4e2fc3fba84fd9fcaac8821f20a1d4e71f557521b22599"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  board_datetime_picker:
+    dependency: "direct main"
+    description:
+      name: board_datetime_picker
+      sha256: "5a6cac1268ea673d824d1146202029ec0bba7f65f4d6279261858b79bc108de1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.8.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -310,6 +326,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_holo_date_picker:
+    dependency: "direct main"
+    description:
+      name: flutter_holo_date_picker
+      sha256: "0ed500c3b2c769c9b6bdeda289cf5c568d9b8d5b1a354438de4d83f14105ffe5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
+  flutter_html:
+    dependency: transitive
+    description:
+      name: flutter_html
+      sha256: "38a2fd702ffdf3243fb7441ab58aa1bc7e6922d95a50db76534de8260638558d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   flutter_image_compress:
     dependency: "direct main"
     description:
@@ -358,6 +390,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.5"
+  flutter_js:
+    dependency: "direct main"
+    description:
+      name: flutter_js
+      sha256: a04966b102967891ee4947d6e52b450676f16204876ba936e394008ca26db04b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.5"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -693,6 +733,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  light_html_editor:
+    dependency: "direct main"
+    description:
+      name: light_html_editor
+      sha256: "23a705f197d5c51eaf93241ca4e0e7a3dd4f14ec7b536f684bf352d99fbf24f5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3"
   lints:
     dependency: transitive
     description:
@@ -701,6 +749,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.1"
+  list_counter:
+    dependency: transitive
+    description:
+      name: list_counter
+      sha256: c447ae3dfcd1c55f0152867090e67e219d42fe6d4f2807db4bbe8b8d69912237
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   local_auth:
     dependency: "direct main"
     description:
@@ -1178,6 +1234,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  sync_http:
+    dependency: transitive
+    description:
+      name: sync_http
+      sha256: "7f0cd72eca000d2e026bcd6f990b81d0ca06022ef4e32fb257b30d3d1014a961"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   synchronized:
     dependency: transitive
     description:

@@ -1,4 +1,6 @@
 
+import 'package:community/screens/auth/viewmodel/appdisabled_viewmodel.dart';
+import 'package:community/screens/doc_details/viewmodel/docrenderer_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 
 import '../screens/auth/viewmodel/authpage_viewmodel.dart';
@@ -73,4 +75,6 @@ Future setUpLocator() async {
   locator.registerLazySingleton<MonthlyDataViewModel>(() => MonthlyDataViewModel());
   locator.registerLazySingleton<BaseUrlViewModel>(() => BaseUrlViewModel());
   locator.registerLazySingleton<AuthPageViewModel>(() => AuthPageViewModel());
+  locator.registerLazySingleton<DocRendererViewmodel>(() => DocRendererViewmodel());
+  locator.registerLazySingleton<AppDisabledViewModel>(() => AppDisabledViewModel());
 }

@@ -94,11 +94,17 @@ class HomeScreenViewModel extends BaseViewModel{
     return result;
   }
 
+  Future<bool> isFaceITEnabled() async {
+    bool result = await CommonApiRequest().isFaceITEnabled();
+    return result;
+  }
+
 
   void initApp(bool forcedResync) async {
     await authenticate();
     bool isSessionValid = await isSessionExpired();
-    if(isSessionValid){
+    bool appEnabled = await isFaceITEnabled();
+    if(isSessionValid && appEnabled){
       await initFeatures();
       await getUserDetails();
       await getRecentCheckin();
@@ -112,7 +118,11 @@ class HomeScreenViewModel extends BaseViewModel{
       isLoading  = false;
       notifyListeners();
     } else {
-      locator.get<NavigationService>().navigateTo(authScreen);
+      if(!isSessionValid) {
+        locator.get<NavigationService>().navigateTo(authScreen);
+      } else {
+        locator.get<NavigationService>().navigateTo(appDisabledScreen);
+      }
     }
   }
 

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:community/locator/locator.dart';
 import 'package:community/router/routing_constants.dart';
@@ -44,8 +45,12 @@ class ApiMethodHandler {
     {
           if(e.response!.data['exception'] != null){
             print('****');
-            print(e.response!.data);
-            getSnackBar(description: e.response!.data['_server_messages']);
+            debugPrint(e.response!.data.toString());
+            final rawServerMessages = e.response!.data['_server_messages'];
+            final decodedList = json.decode(rawServerMessages);
+            final messageMap = json.decode(decodedList[0]);
+            final message = messageMap['message'];
+            getSnackBar(description: message);
           }
       } else if(e.response!.data['exception'].split(" ")[0] == 'ModuleNotFoundError:'){
         getSnackBar(description: e.response!.data['exception']);

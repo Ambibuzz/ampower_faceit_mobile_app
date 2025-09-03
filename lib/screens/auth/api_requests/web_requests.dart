@@ -7,11 +7,13 @@ import '../../../helpers/shared_preferences.dart';
 import '../../../helpers/toast.dart';
 import '../../../locator/locator.dart';
 import '../../../utils/Urls.dart';
+import '../../../utils/apiMethodHandlers.dart';
 import '../../home/view/home.dart';
 import '../viewmodel/authpage_viewmodel.dart';
 
 class WebRequests {
-  Future emailAuth( String email, String password,context) async {
+  Future<bool> emailAuth( String email, String password,context) async {
+    bool authResult = false;
     String baseURL = await Urls().root();
     var uri = '${baseURL}api/method/login';
     Map<String, String> requestBody = <String, String>{
@@ -27,7 +29,6 @@ class WebRequests {
         var finalData = await jsonDecode(response.body);
         var headersString = response.headers;
         var headersList = headersString['set-cookie']!.split(';');
-        //var a = headersList[8].split(',');
         var id = headersList[0].substring(4);
         var fullName = finalData['full_name'];
         setLoggedIn(true);
@@ -41,7 +42,7 @@ class WebRequests {
             snackPosition: Getx.SnackPosition.BOTTOM,
             backgroundColor: Colors.green.withOpacity(0.8)
         );
-        Get.offAll(Home());
+        authResult = true;
       } else if (response.statusCode == 401) {
         Get.snackbar(
             "Wrong Credentials",
@@ -50,18 +51,17 @@ class WebRequests {
             snackPosition: Getx.SnackPosition.BOTTOM,
             backgroundColor: const Color(0xFFE38080)
         );
+        authResult = false;
       } else {
-        print('******');
-        //print(ex);
         fluttertoast(context, 'Something went wrong');
+        authResult = false;
       }
     }catch(ex){
-      print('**');
-      print(ex);
+      authResult = false;
       fluttertoast(context, 'Something went wrong');
     }finally{
       locator.get<AuthPageViewModel>().isLoggingIn = false;
     }
-
+    return authResult;
   }
 }

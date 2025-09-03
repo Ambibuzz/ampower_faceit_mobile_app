@@ -15,3 +15,4 @@ const String notificationScreen = 'notification_screen';
 const String profileScreen = 'profile_screen';
 const String employeeSearchScreen = 'employee_search_screen';
 const String docDetailsScreen = 'docDetailsScreen';
+const String appDisabledScreen = 'appDisabledScreen';

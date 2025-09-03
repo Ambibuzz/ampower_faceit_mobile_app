@@ -1,3 +1,4 @@
+import 'package:community/screens/auth/view/app_disabled.dart';
 import 'package:community/screens/doc_details/view/doc_renderer.dart';
 
 import '../screens/profile/view/profile_page.dart';
@@ -54,6 +55,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => ProfilePage());
     case docDetailsScreen:
       return MaterialPageRoute(builder: (context) => DocRenderer(doctype: settings.arguments));
+    case appDisabledScreen:
+      return MaterialPageRoute(builder: (context) => AppDisabled());
     default:
       return MaterialPageRoute(
           builder: (context) => UndefinedView(name: settings.name));

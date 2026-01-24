@@ -8,5 +8,5 @@ class Urls {
 }
 
 class AppVersion {
-  static const version = '20.0.0';
+  static const version = '3.0.0';
 }

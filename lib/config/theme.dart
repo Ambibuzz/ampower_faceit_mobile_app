@@ -136,7 +136,7 @@ class CustomTheme {
         surfaceTintColor: surfaceColorLight,
         backgroundColor: surfaceColorLight,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
           color: surfaceColorLight,
           elevation: elevation,
           surfaceTintColor: surfaceColorLight),
@@ -148,7 +148,7 @@ class CustomTheme {
         decoration: BoxDecoration(
             color: surfaceColorLight, borderRadius: Corners.medBorder),
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
           backgroundColor: backgroundColorLight,
           titleTextStyle:
               dialogTitleTextStyle.copyWith(color: onSurfaceColorLight),

@@ -28,12 +28,14 @@ class WebRequests {
       if (response.statusCode == 200) {
         var finalData = await jsonDecode(response.body);
         var headersString = response.headers;
-        var headersList = headersString['set-cookie']!.split(';');
-        var id = headersList[0].substring(4);
         var fullName = finalData['full_name'];
+        var cookie = headersString['set-cookie'];
         setLoggedIn(true);
-        setId(id);
-        setEmail(email);
+        setId(cookie ?? '');
+        dynamic emailResponse = await ApiMethodHandler().makeGETRequest(url: '${baseURL}api/method/frappe.auth.get_logged_user');
+        emailResponse = jsonDecode(emailResponse.toString());
+        var emailId = emailResponse["message"];
+        setEmail(emailId);
         setFullName(fullName);
         Get.snackbar(
             "Logged in Successfully!",
@@ -42,7 +44,7 @@ class WebRequests {
             snackPosition: Getx.SnackPosition.BOTTOM,
             backgroundColor: Colors.green.withOpacity(0.8)
         );
-        authResult = true;
+        Get.offAll(Home());
       } else if (response.statusCode == 401) {
         Get.snackbar(
             "Wrong Credentials",

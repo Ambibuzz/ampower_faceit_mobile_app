@@ -1,6 +1,7 @@
 import 'package:community/screens/auth/view/app_disabled.dart';
 import 'package:community/screens/doc_details/view/doc_renderer.dart';
 
+import '../screens/no_internet/view/no_internet.dart';
 import '../screens/profile/view/profile_page.dart';
 import '../screens/splash_screen/view/splash_screen.dart';
 import '../router/routing_constants.dart';
@@ -57,6 +58,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => DocRenderer(doctype: settings.arguments));
     case appDisabledScreen:
       return MaterialPageRoute(builder: (context) => AppDisabled());
+    case noInternetScreen:
+      return MaterialPageRoute(builder: (context) => NoInternet());
     default:
       return MaterialPageRoute(
           builder: (context) => UndefinedView(name: settings.name));

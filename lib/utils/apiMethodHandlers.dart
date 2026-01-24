@@ -1,179 +1,201 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:community/locator/locator.dart';
-import 'package:community/router/routing_constants.dart';
-import 'package:community/service/navigation_service.dart';
+import 'package:community/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart' as GetHandler;
 import 'package:get/get_core/src/get_main.dart';
-
 import '../helpers/shared_preferences.dart';
+import '../locator/locator.dart';
+import '../router/routing_constants.dart';
+import '../service/navigation_service.dart';
 import 'dioSingleton.dart';
 
 class ApiMethodHandler {
-
-  void handleException(e,url){
-    print('*****');
+  Future<void> handleException(e, String url) async {
+    print('************');
     print(e.toString());
     print(url);
-    if(e.response != null){
-      if(e is SocketException){
-        getSnackBar(description: 'No Internet Connection. Please Connect to Wifi or Mobile Network.');
-      } else if(
-              e.response!.data['exc_type'] == 'PermissionError' ||
-              e.response!.data['exc_type'] == 'ValidationError' ||
-              e.response!.data['exc_type'] == 'TimestampMismatchError' ||
-              e.response!.data['exc_type'] == 'MissingDocumentError' ||
-              e.response!.data['exc_type'] == 'DoesNotExistError' ||
-              e.response!.data['exc_type'] == 'AlreadyExistsError' ||
-              e.response!.data['exc_type'] == 'UnpermittedError' ||
-              e.response!.data['exc_type'] == 'InvalidStatusError' ||
-              e.response!.data['exc_type'] == 'DataError' ||
-              e.response!.data['exc_type'] == 'TransitionError' ||
-              e.response!.data['exc_type'] == 'RateLimitExceededError' ||
-              e.response!.data['exc_type'] == 'NamingError' ||
-              e.response!.data['exc_type'] == 'ReadOnlyError' ||
-              e.response!.data['exc_type'] == 'WorkflowPermissionError' ||
-              e.response!.data['exc_type'] == 'DuplicateEntryError' ||
-              e.response!.data['exc_type'] == 'InsufficientLeaveBalanceError' ||
-              e.response!.data['exc_type'] == 'OverlappingAttendanceRequestError' ||
-              e.response!.data['exc_type'] == 'OverlapError' ||
-          e.response!.data['exception'].split(" ")[0] == 'frappe.exceptions.PermissionError:' ||
-                  e.response!.data['exception'].split(" ")[0] == 'frappe.exceptions.PermissionError')
-    {
-          if(e.response!.data['exception'] != null){
-            print('****');
-            debugPrint(e.response!.data.toString());
-            final rawServerMessages = e.response!.data['_server_messages'];
-            final decodedList = json.decode(rawServerMessages);
-            final messageMap = json.decode(decodedList[0]);
-            final message = messageMap['message'];
-            getSnackBar(description: message);
+
+    // Check internet connectivity
+    if (!(await hasInternet()) || e is SocketException) {
+      locator.get<NavigationService>().navigateTo(noInternetScreen);
+      return;
+    }
+
+    // Handle DioException (Frappe responses)
+    if (e is DioException && e.response != null) {
+      final resp = e.response!;
+      final data = resp.data;
+
+      try {
+        // Handle Frappe known exceptions
+        if (data != null && data['exc_type'] != null) {
+          final excType = data['exc_type'];
+          final exception = data['exception'] ?? '';
+
+          if ([
+            'PermissionError',
+            'ValidationError',
+            'TimestampMismatchError',
+            'MissingDocumentError',
+            'DoesNotExistError',
+            'AlreadyExistsError',
+            'UnpermittedError',
+            'InvalidStatusError',
+            'DataError',
+            'TransitionError',
+            'RateLimitExceededError',
+            'NamingError',
+            'ReadOnlyError',
+            'WorkflowPermissionError',
+            'DuplicateEntryError',
+            'OverlappingAttendanceRequestError',
+            'OverlapError'
+          ].contains(excType) ||
+              exception.startsWith('frappe.exceptions.PermissionError:')) {
+            if (data['_server_messages'] != null) {
+              final rawServerMessages = data['_server_messages'];
+              final decodedList = json.decode(rawServerMessages);
+              final messageMap = json.decode(decodedList[0]);
+              final message = messageMap['message'];
+              getSnackBar(description: message);
+              return;
+            }
           }
-      } else if(e.response!.data['exception'].split(" ")[0] == 'ModuleNotFoundError:'){
-        getSnackBar(description: e.response!.data['exception']);
-      } else{
-        switch (e.response!.statusCode) {
+
+          if (exception.startsWith('ModuleNotFoundError:')) {
+            getSnackBar(description: exception);
+            return;
+          }
+        }
+
+        // Handle HTTP status codes
+        switch (resp.statusCode) {
           case 400:
-            getSnackBar(description: 'Either no Permission or Session Expired. Please re-login or contact erp.support@ambibuzz.com');
-            locator.get<NavigationService>().navigateTo(authScreen);
-            break;
           case 401:
-            getSnackBar(description: 'Either no Permission or Session Expired. Please re-login or contact erp.support@ambibuzz.com');
-            locator.get<NavigationService>().navigateTo(authScreen);
-            break;
           case 403:
-            getSnackBar(description: 'Either no Permission or Session Expired. Please re-login or contact erp.support@ambibuzz.com');
+            getSnackBar(
+                description:
+                'Either no Permission or Session Expired. Please re-login or contact erp.support@ambibuzz.com');
             locator.get<NavigationService>().navigateTo(authScreen);
-            break;
+            return;
           case 404:
             getSnackBar(description: 'Not found $contactSupport');
-            break;
+            return;
           case 408:
             getSnackBar(description: 'Request Timed Out $contactSupport');
-            break;
+            return;
           case 409:
             getSnackBar(description: 'Conflict $contactSupport');
-            break;
+            return;
           case 500:
             getSnackBar(description: 'Internal Server Error $contactSupport');
-            break;
+            return;
           case 503:
             getSnackBar(description: 'Service Unavailable $contactSupport');
+            return;
+        }
+
+        // Handle DioException types
+        switch (e.type) {
+          case DioExceptionType.sendTimeout:
+            getSnackBar(description: 'Send Timeout $contactSupport');
+            break;
+          case DioExceptionType.cancel:
+            getSnackBar(description: "Request Cancelled $contactSupport");
+            break;
+          case DioExceptionType.connectionTimeout:
+            getSnackBar(description: "Connection Timeout $contactSupport");
+            break;
+          case DioExceptionType.unknown:
+            getSnackBar(description: "Unknown Error Occurred $contactSupport");
+            break;
+          case DioExceptionType.receiveTimeout:
+            getSnackBar(description: 'Receive Timeout $contactSupport');
+            break;
+          case DioExceptionType.badCertificate:
+            getSnackBar(description: 'Bad Certificate $contactSupport');
+            break;
+          case DioExceptionType.badResponse:
+            getSnackBar(description: 'Bad Response $contactSupport');
+            break;
+          case DioExceptionType.connectionError:
+            getSnackBar(description: 'Connection Error');
             break;
           default:
-            switch(e.type){
-              case DioExceptionType.sendTimeout:
-                getSnackBar(description: 'Send Timeout $contactSupport');
-                break;
-              case DioExceptionType.cancel:
-                getSnackBar(description: "Request Cancelled $contactSupport");
-                break;
-              case DioExceptionType.connectionTimeout:
-                getSnackBar(description: "Connection Timeout $contactSupport");
-                break;
-              case DioExceptionType.unknown:
-                getSnackBar(description: "Unknown Error Occurred $contactSupport");
-                break;
-              case DioExceptionType.receiveTimeout:
-                getSnackBar(description: 'Recieve Timeout $contactSupport');
-                break;
-              case DioExceptionType.badCertificate:
-                getSnackBar(description: 'Bad Certificate $contactSupport');
-                break;
-              case DioExceptionType.badResponse:
-                getSnackBar(description: 'Bad Response $contactSupport');
-                break;
-              case DioExceptionType.connectionError:
-                getSnackBar(description: 'Connection Error');
-                break;
-              default:
-                getSnackBar(description: 'Something went wrong! $contactSupport');
-                break;
-            }
+            getSnackBar(description: 'Something went wrong! $contactSupport');
             break;
         }
+      } catch (err) {
+        print('Error parsing Frappe response: $err');
+        getSnackBar(description: 'Something went wrong! $contactSupport');
       }
     } else {
+      // Fallback for non-Dio exceptions
       getSnackBar(description: 'Something went wrong! $contactSupport');
     }
   }
 
-  static String contactSupport = 'Please contact your HR for further assistance.';
-  getSnackBar({
-    required String description
-}) {
-    return Get.snackbar(
-        "Error!","",
+  static String contactSupport =
+      'Please contact your HR for further assistance.';
+  getSnackBar({required String description}) {
+    return Get.snackbar("Error!", "",
         messageText: HtmlWidget(description),
         icon: const Icon(Icons.cancel_outlined, color: Colors.white),
         snackPosition: GetHandler.SnackPosition.TOP,
         duration: const Duration(seconds: 5),
-        backgroundColor: Colors.white//Color(0xFFE38080)
+        backgroundColor: Colors.white //Color(0xFFE38080)
     );
   }
 
-  Future<Response?> makeGETRequest({
-    required String url
-}) async{
-    var id =  await getId();
-    var headers = {'Cookie': 'sid=$id;'};
-    try{
+  Future<Response?> makeGETRequest({required String url}) async {
+    var id = await getId();
+    var headers = {'Cookie': id};
+    try {
+      // Check internet connectivity
+      if (!(await hasInternet())) {
+        locator.get<NavigationService>().navigateTo(noInternetScreen);
+        return null;
+      }
+
       DioInstance dioInstance = DioInstance();
       Dio dio = await dioInstance.getDioInstance();
-      Response userData = await dio.get(
-          url,
-          options: Options(
-              headers: headers
-          )
-      );
+      Response userData = await dio.get(url, options: Options(headers: headers));
       return userData;
-    } on DioException catch(e) {
-      handleException(e,url);
+    } on DioException catch (e) {
+      print(e.toString());
+      handleException(e, url);
     }
     return null;
   }
+
 
   Future<Response?> makePOSTRequest({
     required headers,
     required String url,
     required data,
-  }) async{
-    try{
+  }) async {
+    try {
+
+      // Check internet connectivity
+      if (!(await hasInternet())) {
+        locator.get<NavigationService>().navigateTo(noInternetScreen);
+        return null;
+      }
+      //change header cookies
+      var id = await getId();
+      headers['Cookie'] = id;
+
       DioInstance dioInstance = DioInstance();
       Dio dio = await dioInstance.getDioInstance();
-      Response userData = await dio.post(
-          url,
-          data: data,
-          options: Options(
-              headers: headers
-          )
-      );
+      Response userData = await dio.post(url, data: data, options: Options(headers: headers));
       return userData;
-    } on DioException catch(e) {
-      handleException(e,url);
+    } on DioException catch (e) {
+      handleException(e, url);
+    } catch(e) {
+      handleException(e, url);
     }
     return null;
   }
@@ -182,22 +204,25 @@ class ApiMethodHandler {
     required headers,
     required String url,
     required data,
-  }) async{
-    try{
+  }) async {
+    try {
+      // Check internet connectivity
+      if (!(await hasInternet())) {
+        locator.get<NavigationService>().navigateTo(noInternetScreen);
+        return null;
+      }
+      //change header cookies
+      var id = await getId();
+      headers['Cookie'] = id;
       Dio dio = Dio(BaseOptions(
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
       ));
-      Response userData = await dio.post(
-          url,
-          data: data,
-          options: Options(
-              headers: headers
-          )
-      );
+      Response userData =
+      await dio.post(url, data: data, options: Options(headers: headers));
       return userData;
-    } on DioException catch(e) {
-      handleException(e,url);
+    } on DioException catch (e) {
+      handleException(e, url);
     }
     return null;
   }
@@ -206,20 +231,21 @@ class ApiMethodHandler {
     required headers,
     required String url,
     required data,
-  }) async{
+  }) async {
     Response? userData;
-    try{
+    try {
+      // Check internet connectivity
+      if (!(await hasInternet())) {
+        locator.get<NavigationService>().navigateTo(noInternetScreen);
+        return null;
+      }
+
       Dio dio = Dio(BaseOptions(
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
       ));
-      userData = await dio.post(
-          url,
-          data: data,
-          options: Options(
-              headers: headers
-          )
-      );
+      userData =
+      await dio.post(url, data: data, options: Options(headers: headers));
       return userData;
     } on DioException {
       return userData;
@@ -230,20 +256,22 @@ class ApiMethodHandler {
     required headers,
     required String url,
     required data,
-  }) async{
-    try{
+  }) async {
+    try {
+      // Check internet connectivity
+      if (!(await hasInternet())) {
+        locator.get<NavigationService>().navigateTo(noInternetScreen);
+        return null;
+      }
+      //change header cookies
+      var id = await getId();
+      headers['Cookie'] = id;
       DioInstance dioInstance = DioInstance();
       Dio dio = await dioInstance.getDioInstance();
-      Response userData = await dio.put(
-          url,
-          data: data,
-          options: Options(
-              headers: headers
-          )
-      );
+      Response userData = await dio.put(url, data: data, options: Options(headers: headers));
       return userData;
-    } on DioException catch(e) {
-      handleException(e,url);
+    } on DioException catch (e) {
+      handleException(e, url);
     }
     return null;
   }

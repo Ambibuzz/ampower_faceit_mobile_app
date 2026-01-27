@@ -1,12 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_js/flutter_js.dart';
-import 'package:flutter_js/javascript_runtime.dart';
-import 'dart:math';
 import '../../../base_viewmodel.dart';
+import '../../../utils/WebViewJavaScriptRuntime.dart';
 import '../../doc_details/web_requests/web_requests.dart';
-import 'package:light_html_editor/editor.dart';
 
 class DocRendererViewmodel extends BaseViewModel {
   var currentMeta;
@@ -138,12 +134,11 @@ class DocRendererViewmodel extends BaseViewModel {
     }
   }
 
-  String evaluateJS(expression) {
+  Future<String> evaluateJS(String expression) async {
     if (expression.trim().isEmpty) {
       return 'true';
     }
 
-    final JavascriptRuntime jsRuntime = getJavascriptRuntime();
     var document = currentData['docs'].first;
     var docJson = jsonEncode(document);
 
@@ -154,18 +149,19 @@ class DocRendererViewmodel extends BaseViewModel {
     // handling shorthand expressions
     final regex = RegExp(r'^[a-zA-Z_][a-zA-Z0-9_]*$');
     if (regex.hasMatch(expression)) {
-      // wrapping up the expression
-      expression = 'doc["$expression"] != null && doc["$expression"] !== ""';
+      expression =
+      'doc["$expression"] != null && doc["$expression"] !== ""';
     }
 
-    String jsCode = """
+    final jsCode = """
     const doc = $docJson;
     $expression
   """;
 
-    var evalResult = jsRuntime.evaluate(jsCode);
-    return evalResult.stringResult;
+    final jsRuntime = WebViewJavascriptRuntime();
+    return await jsRuntime.evaluate(jsCode);
   }
+
 
   Future<void> breakMetaWithOverview() async {
     modifiedMeta = {};

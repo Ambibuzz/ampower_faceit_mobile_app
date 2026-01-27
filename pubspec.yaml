@@ -71,7 +71,7 @@ dependencies:
   flutter_holo_date_picker: ^2.0.0
   board_datetime_picker: ^2.8.1
   light_html_editor:
-  flutter_js: ^0.8.2
+  flutter_inappwebview: ^6.1.5
 
 
 
